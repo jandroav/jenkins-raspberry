@@ -6,7 +6,7 @@ ENV CASC_JENKINS_CONFIG "/var/jcasc/jenkins.yaml"
 
 ### JENKINS CUSTOMIZATION (1) BEGIN ###
 
-COPY plugins.txt /usr/share/jenkins/ref/
+COPY jenkins-raspberry/plugins.txt /usr/share/jenkins/ref/
 
 RUN \
   jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
@@ -20,11 +20,11 @@ RUN \
   chown -R jenkins:0 /var/jcasc && \
   chmod -R 0770 /var/jcasc
 
-COPY jenkins.yaml /var/jcasc
+COPY jenkins-raspberry/jenkins.yaml /var/jcasc
 
 # EXPOSE
 
-COPY locale.xml ${JENKINS_HOME}
+COPY jenkins-raspberry/locale.xml ${JENKINS_HOME}
 
 # VOLUME
 
