@@ -1,11 +1,9 @@
 # jenkins-raspberry
 This is a project to explain how to run Jenkins on an old raspberry pi using:
 * Raspberry Pi OS
-* Podman
-* Buildah
 
 The initial idea was to build everything over kubernetes but k3s has certain problems with Raspberry Pi 3 models so the new architecture will be:
-* Jenkins main instance running with Podman in a Raspberry Pi 3 model B
+* Jenkins main instance running in a Raspberry Pi 3 model B
 * Jenkins agents running over a k3s cluster built from several Raspberry Pi 4
 ## Hardware you need
 * At least one Raspberry Pi 3 model B
@@ -47,26 +45,9 @@ sudo raspi-config
 ```bash
 sudo apt-get update && sudo apt-get upgrade
 ```
-# Install Podman, Buildah and runc
-Run the following commands:
+# Install Jenkins
 ```bash
-curl -L https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/Debian_10/Release.key | apt-key add - && \
-echo "deb http://deb.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/buster-backports.list && \
-echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10 /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list && \
-export DEBIAN_FRONTEND=noninteractive && \
-apt-get update && \
-apt-get install -t buster-backports -y --no-install-recommends \
-libseccomp-dev && \
-apt-get install -y --no-install-recommends \
-buildah \
-podman \
-runc && \
-rm -rf /var/lib/apt/lists/*
+sudo apt install snapd
+sudo reboot
+sudo snap install jenkins --classic
 ```
-# Install other packages
-```bash
-# git
-sudo apt-get install git
-```
-# Build Jenkins main instance image
-//TODO
