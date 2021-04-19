@@ -81,6 +81,11 @@ curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/
 sudo apt-get update -qq
 sudo apt-get -qq -y install buildah
 ```
+# Install runc
+Run the following commands:
+```bash
+sudo apt-get install runc
+```
 # Install other packages
 ```bash
 # git
