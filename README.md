@@ -47,44 +47,21 @@ sudo raspi-config
 ```bash
 sudo apt-get update && sudo apt-get upgrade
 ```
-# Install Podman
+# Install Podman, Buildah and runc
 Run the following commands:
 ```bash
-# Raspbian 10
-# First enable user namespaces as root user
-echo 'kernel.unprivileged_userns_clone=1' | sudo tee -a /etc/sysctl.d/00-local-userns.conf
-sudo systemctl restart procps
-
-# Use buster-backports on Rasbian 10 for a newer libseccomp2
-echo 'deb http://deb.debian.org/debian buster-backports main' | sudo tee -a /etc/apt/sources.list
-echo 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/ /' | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/Release.key | sudo apt-key add -
-
-# Add missing keys for buster-backports manually
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
-
-sudo apt-get update
-sudo apt-get -y -t buster-backports install libseccomp2
-sudo apt-get -y install podman
-# Restart dbus for rootless podman. Do this for every user using containers.
-# This command only works without root. One way to do this is to login as the
-# user via SSH, so DBUS_SESSION_BUS_ADDRESS will be set correctly.
-systemctl --user restart dbus
-```
-# Install Buildah
-Run the following commands:
-```bash
-# Raspbian 10
-echo 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/ /' | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/Release.key | sudo apt-key add -
-sudo apt-get update -qq
-sudo apt-get -qq -y install buildah
-```
-# Install runc
-Run the following commands:
-```bash
-sudo apt-get install runc
+curl -L https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/Debian_10/Release.key | apt-key add - && \
+echo "deb http://deb.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/buster-backports.list && \
+echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10 /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list && \
+export DEBIAN_FRONTEND=noninteractive && \
+apt-get update && \
+apt-get install -t buster-backports -y --no-install-recommends \
+libseccomp-dev && \
+apt-get install -y --no-install-recommends \
+buildah \
+podman \
+runc && \
+rm -rf /var/lib/apt/lists/*
 ```
 # Install other packages
 ```bash
