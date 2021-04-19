@@ -9,7 +9,7 @@ ENV CASC_JENKINS_CONFIG "/var/jcasc/jenkins.yaml"
 COPY plugins.txt /usr/share/jenkins/ref/
 
 RUN \
-  jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
+  #jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
 
 USER 0
 
