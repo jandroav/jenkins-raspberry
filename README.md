@@ -47,7 +47,8 @@ sudo apt-get update && sudo apt-get upgrade
 ```
 # Install Jenkins
 ```bash
-sudo apt install snapd
-sudo reboot
-sudo snap install jenkins --classic
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt update
+sudo apt install jenkins
 ```
